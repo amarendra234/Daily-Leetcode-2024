@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int count_subset(int index,vector<int>&nums,int curr_subset,int max_or,vector<vector<int>>&dp){
+        if(index==nums.size()){
+            if(curr_subset==max_or){
+                return 1;
+            }
+            return 0;
+        }
+        if(dp[index][curr_subset]!=-1){
+            return dp[index][curr_subset];
+        }
+        // include current element
+        int include=count_subset(index+1,nums,curr_subset|nums[index],max_or,dp);
+        int not_include=count_subset(index+1,nums,curr_subset,max_or,dp);
+        return dp[index][curr_subset]=include+not_include;
+    }
+    int countMaxOrSubsets(vector<int>& nums) {
+        int max_or=0;
+       
+        for(int i=0;i<nums.size();i++){
+            max_or|=nums[i];
+        }
+         vector<vector<int>>dp(nums.size()+1,vector<int>(max_or+1,-1));
+        return count_subset(0,nums,0,max_or,dp);
+    }
+};
